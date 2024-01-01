@@ -16,8 +16,11 @@ PNR_DEBUG ?= # --verbose --debug
 
 BOARD ?= UNKNOWN
 JTAG_LINK ?= --board ${BOARD}
+LOG_DIR ?= log
 
 XDC ?= ${PROJECT}.xdc
+
+#SYNTH_OPTS ?= -l ${PROJECT}_synth.log
 
 .PHONY: all
 all: ${PROJECT}.bit
@@ -27,7 +30,8 @@ program: ${PROJECT}.bit
 	openFPGALoader ${JTAG_LINK} --bitstream $<
 
 ${PROJECT}.json: ${TOP_VERILOG} ${ADDITIONAL_SOURCES}
-	yosys -p "synth_xilinx -flatten -abc9 ${SYNTH_OPTS} -arch xc7 -top ${TOP_MODULE}; write_json ${PROJECT}.json" $< ${ADDITIONAL_SOURCES}
+	-@mkdir -p $(LOG_DIR)
+	yosys -p "synth_xilinx -flatten -abc9 ${SYNTH_OPTS} -arch xc7 -top ${TOP_MODULE}; write_json ${PROJECT}.json" $< ${ADDITIONAL_SOURCES} | tee $(LOG_DIR)/synth.log
 
 # The chip database only needs to be generated once
 # that is why we don't clean it with make clean
@@ -37,13 +41,13 @@ ${CHIPDB}/${DBPART}.bin:
 	rm -f ${DBPART}.bba
 
 ${PROJECT}.fasm: ${PROJECT}.json ${CHIPDB}/${DBPART}.bin ${XDC}
-	nextpnr-xilinx --chipdb ${CHIPDB}/${DBPART}.bin --xdc ${XDC} --json ${PROJECT}.json --fasm $@ ${PNR_ARGS} ${PNR_DEBUG}
+	nextpnr-xilinx -l $(LOG_DIR)/pnr.log --chipdb ${CHIPDB}/${DBPART}.bin --xdc ${XDC} --json ${PROJECT}.json --fasm $@ ${PNR_ARGS} ${PNR_DEBUG}
 	
 ${PROJECT}.frames: ${PROJECT}.fasm
-	fasm2frames --part ${PART} --db-root ${PRJXRAY_DB_DIR}/${FAMILY} $< > $@
+	fasm2frames --part ${PART} --db-root ${PRJXRAY_DB_DIR}/${FAMILY} $< > $@ | tee $(LOG_DIR)/fasm2frames.log
 
 ${PROJECT}.bit: ${PROJECT}.frames
-	xc7frames2bit --part_file ${PRJXRAY_DB_DIR}/${FAMILY}/${PART}/part.yaml --part_name ${PART} --frm_file $< --output_file $@
+	xc7frames2bit --part_file ${PRJXRAY_DB_DIR}/${FAMILY}/${PART}/part.yaml --part_name ${PART} --frm_file $< --output_file $@ | tee $(LOG_DIR)/frames2bit.log
 
 .PHONY: clean
 clean:

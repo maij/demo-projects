@@ -5,16 +5,17 @@ set_property BITSTREAM.CONFIG.SPI_BUSWIDTH 4 [current_design]
 set_property IOSTANDARD LVCMOS33 [get_ports sys_clk]
 set_property PACKAGE_PIN F22 [get_ports sys_clk]
 
-# Unpopulated LEDs on FPGA board
+### LEDs on FPGA board ###
 # set_property IOSTANDARD LVCMOS33 [get_ports {FPGA_DONE}]
 # set_property PACKAGE_PIN J7 [get_ports {FPGA_DONE}]
+# Unpopulated LEDs on FPGA board
 #set_property IOSTANDARD LVCMOS33 [get_ports {LED2}]
 #set_property PACKAGE_PIN R26 [get_ports {LED2}]
 #set_property IOSTANDARD LVCMOS33 [get_ports {LED3}]
 #set_property PACKAGE_PIN P26	 [get_ports {LED3}]
 
 
-# Tactile switches on FPGA board
+### Tactile switches on FPGA board ###
 # set_property IOSTANDARD LVCMOS18 [get_ports SW1]
 # set_property PACKAGE_PIN P6 [get_ports SW1] # "Program B"
 set_property IOSTANDARD LVCMOS18 [get_ports SW2]
@@ -172,13 +173,13 @@ set_property IOSTANDARD LVCMOS18 [get_ports {HDMI_TX_D[3]}]
 set_property IOSTANDARD LVCMOS18 [get_ports {HDMI_TX_D[2]}]
 set_property IOSTANDARD LVCMOS18 [get_ports {HDMI_TX_D[1]}]
 set_property IOSTANDARD LVCMOS18 [get_ports {HDMI_TX_D[0]}]
-set_property PACKAGE_PIN AD8 [get_ports {HDMI_TX_D[23]}]
-set_property PACKAGE_PIN AE8 [get_ports {HDMI_TX_D[22]}]
-set_property PACKAGE_PIN AF8 [get_ports {HDMI_TX_D[21]}]
-set_property PACKAGE_PIN AC9 [get_ports {HDMI_TX_D[20]}]
-set_property PACKAGE_PIN AD9 [get_ports {HDMI_TX_D[19]}]
+set_property PACKAGE_PIN AD8  [get_ports {HDMI_TX_D[23]}]
+set_property PACKAGE_PIN AE8  [get_ports {HDMI_TX_D[22]}]
+set_property PACKAGE_PIN AF8  [get_ports {HDMI_TX_D[21]}]
+set_property PACKAGE_PIN AC9  [get_ports {HDMI_TX_D[20]}]
+set_property PACKAGE_PIN AD9  [get_ports {HDMI_TX_D[19]}]
 set_property PACKAGE_PIN AF10 [get_ports {HDMI_TX_D[18]}]
-set_property PACKAGE_PIN AF9 [get_ports {HDMI_TX_D[17]}]
+set_property PACKAGE_PIN AF9  [get_ports {HDMI_TX_D[17]}]
 set_property PACKAGE_PIN AD10 [get_ports {HDMI_TX_D[16]}]
 set_property PACKAGE_PIN AE10 [get_ports {HDMI_TX_D[15]}]
 set_property PACKAGE_PIN AE12 [get_ports {HDMI_TX_D[14]}]
